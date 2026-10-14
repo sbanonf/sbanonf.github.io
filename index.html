@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Sebastian Bañon Felix">
+<meta property="og:description" content="Machine Learning Engineer y game developer (SleepyBara).">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sbanonfe.github.io/">
+<meta name="twitter:card" content="summary">
+<title>Sebastian Bañon Felix</title>
+<meta name="description" content="Sebastian Bañon Felix: Machine Learning Engineer y game developer (SleepyBara).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Pixelify+Sans:wght@500;600;700&family=Silkscreen&family=Rubik:wght@400;500;600&display=swap">
+<style>
+/* Dos vistas en una página. DATA: editorial sobria, lakehouse bronce→plata→oro. GAME: arcade nocturno, píxeles y monedas. */
+:root{
+  --bg:#F3F6F7; --surface:#FFFFFF; --fg:#13202A; --muted:#5A6B76; --line:#D7E0E4;
+  --accent:#0F6E7A; --accent-soft:#DDEFF1;
+  --bronze:#A2622F; --silver:#7C8A94; --gold:#B08A12;
+  --code-bg:#0F1A21; --code-fg:#D7E6EA; --code-dim:#7E97A2; --code-key:#6CC7D2;
+  --f-display:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  /* tokens del modo gamer (siempre oscuro, a propósito) */
+  /* paleta Pixperfect: ciruela del logo + rosa claro + destello crema */
+  --g-bg:#1A0915; --g-surface:#2A1023; --g-fg:#FFF0F6; --g-muted:#CFA7C0; --g-line:#4A1D3F;
+  --g-coin:#F4B8D6; --g-coin-soft:#3E1834; --g-pink:#8E3A6E; --g-mint:#FFD9A0; --g-ink:#2A0A20;
+  --g-display:"Pixelify Sans","Schibsted Grotesk",system-ui,sans-serif;
+  --g-pixel:"Silkscreen","JetBrains Mono",ui-monospace,monospace;
+  --g-body:"Rubik","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1418; --surface:#141E24; --fg:#E4ECEF; --muted:#94A6AF; --line:#25343C;
+  --accent:#5CC2CE; --accent-soft:#163039;
+  --bronze:#D08A52; --silver:#AEBAC2; --gold:#D9B13B;
+  --code-bg:#081014; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1418; --surface:#141E24; --fg:#E4ECEF; --muted:#94A6AF; --line:#25343C;
+  --accent:#5CC2CE; --accent-soft:#163039;
+  --bronze:#D08A52; --silver:#AEBAC2; --gold:#D9B13B;
+  --code-bg:#081014; color-scheme:dark}
+:root.game{color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1rem;line-height:1.6;margin:0}
+:root.game body{background:var(--g-bg);color:var(--g-fg)}
+:root:not(.en) [data-l="en"]{display:none!important}
+:root.en [data-l="es"]{display:none!important}
+:root:not(.game) .gv{display:none!important}
+:root.game .dv{display:none!important}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:4px}
+.wrap{max-width:62rem;margin-inline:auto;padding-inline:20px}
+
+/* ---------- header común ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;backdrop-filter:blur(8px)}
+.top .wrap{display:flex;align-items:center;gap:1rem;height:58px}
+.logo{text-decoration:none;margin-right:auto;white-space:nowrap}
+nav.links{display:flex;gap:1.1rem;font-size:.88rem}
+nav.links a{text-decoration:none}
+.pill{display:flex;overflow:hidden;font-size:.76rem}
+.pill button{background:none;border:0;padding:.35rem .7rem;cursor:pointer;font:inherit;color:inherit}
+@media (max-width:820px){nav.links{display:none}}
+@media (max-width:440px){.top .wrap{gap:.5rem}.pill button{padding:.35rem .5rem}}
+
+/* ================= VISTA DATA ================= */
+.dv .top{background:color-mix(in srgb,var(--bg) 88%,transparent);border-bottom:1px solid var(--line)}
+.dv .logo{font-family:var(--f-mono);font-size:.9rem;color:var(--fg)}
+.dv .logo b{color:var(--accent);font-weight:500}
+.dv nav.links a{color:var(--muted)} .dv nav.links a:hover{color:var(--fg)}
+.dv .pill{border:1px solid var(--line);border-radius:999px;font-family:var(--f-mono);color:var(--muted)}
+.dv .pill button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.dv .to-game{font-family:var(--g-pixel);font-size:.72rem;background:var(--g-bg);color:var(--g-coin);border:0;border-radius:4px;padding:.45rem .7rem;cursor:pointer;box-shadow:3px 3px 0 var(--g-pink);white-space:nowrap}
+.dv .to-game:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--g-pink)}
+.dv a{color:var(--accent)}
+.dv h1,.dv h2,.dv h3{font-family:var(--f-display)}
+
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:center;padding-block:4.5rem 3.5rem}
+.hero>*{min-width:0}
+.dv .status{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-mono);font-size:.78rem;color:var(--accent);background:var(--accent-soft);padding:.3rem .7rem;border-radius:999px;margin-bottom:1.4rem}
+.dv .status i{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.dv .hero h1{font-size:clamp(2.6rem,6.4vw,4.4rem);font-weight:800;letter-spacing:-.035em}
+.dv .hero h1 span{display:block;color:var(--muted);font-weight:600}
+.dv .role{font-family:var(--f-mono);font-size:.95rem;margin-top:1.1rem}
+.dv .role em{font-style:normal;color:var(--accent)}
+.dv .lede{color:var(--muted);font-size:1.08rem;max-width:36rem;margin-top:1.1rem}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.8rem}
+.dv .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.15rem;border-radius:8px;font-weight:600;font-size:.95rem;text-decoration:none;border:1px solid var(--fg);color:var(--fg)}
+.dv .btn.primary{background:var(--fg);color:var(--bg)}
+.dv .btn:hover{transform:translateY(-1px)}
+
+.query{background:var(--code-bg);color:var(--code-fg);border-radius:12px;font-family:var(--f-mono);font-size:.8rem;line-height:1.7;overflow:hidden;box-shadow:0 18px 40px -22px rgba(8,20,26,.55)}
+.query .bar{display:flex;gap:6px;padding:.7rem .9rem;border-bottom:1px solid rgba(255,255,255,.07);align-items:center}
+.query .bar i{width:9px;height:9px;border-radius:50%;background:#33444D}
+.query .bar span{margin-left:.6rem;color:var(--code-dim);font-size:.72rem}
+.query pre{margin:0;padding:1rem 1.1rem;white-space:pre-wrap;word-break:break-word}
+.k{color:var(--code-key)} .s{color:#E6C07B}
+.query table{width:100%;border-collapse:collapse;border-top:1px solid rgba(255,255,255,.07)}
+.query td{padding:.42rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top}
+.query td:first-child{color:var(--code-dim);width:38%;white-space:nowrap}
+.query .foot{padding:.55rem 1.1rem;color:var(--code-dim);font-size:.72rem}
+
+.facts{display:grid;grid-template-columns:repeat(4,1fr)}
+.facts div{padding:1.3rem 1rem 1.3rem 0}
+.facts div+div{padding-left:1rem}
+.facts b{display:block;font-size:1.7rem;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.facts span{font-size:.82rem}
+.dv .facts{border-block:1px solid var(--line)}
+.dv .facts div+div{border-left:1px solid var(--line)}
+.dv .facts b{font-family:var(--f-display)}
+.dv .facts span{color:var(--muted)}
+@media (max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){padding-left:0;border-left:0!important}}
+
+section.block{padding-block:4.5rem 1rem}
+.dv .eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+.dv section.block h2{font-size:clamp(1.8rem,3.6vw,2.5rem);font-weight:700;letter-spacing:-.025em;margin-bottom:2rem}
+
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:3rem}
+.about>*{min-width:0}
+.about p{font-size:1.06rem;max-width:38rem}
+.about p+p{margin-top:1rem}
+.principles{display:grid;gap:1.1rem;align-content:start}
+.dv .principles div{border-top:1px solid var(--line);padding-top:.9rem}
+.principles h3{font-size:1.05rem;font-weight:700}
+.dv .principles p{color:var(--muted);font-size:.93rem;margin-top:.2rem}
+@media (max-width:760px){.about,.hero{grid-template-columns:1fr;gap:2.2rem}}
+
+.now{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;padding:1.6rem}
+.now>*{min-width:0}
+.dv .now{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.dv .now .tag{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:.2rem .6rem;white-space:nowrap}
+.now h3{font-size:1.35rem}
+.dv .now p{color:var(--muted);margin-top:.4rem}
+@media (max-width:560px){.now{grid-template-columns:1fr;gap:.8rem}}
+
+.job{display:grid;grid-template-columns:11rem 1fr;gap:2rem;padding-block:1.8rem;border-top:1px solid var(--line)}
+.job>*{min-width:0}
+.when{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.when b{display:block;color:var(--fg);font-weight:500;font-size:.88rem;margin-bottom:.25rem}
+.job h3{font-size:1.25rem;font-weight:700}
+.org{color:var(--accent);font-weight:600;margin-top:.2rem}
+.org small{color:var(--muted);font-weight:400}
+.job ul{margin:.9rem 0 0;padding-left:1.1rem}
+.job li{margin-top:.35rem}
+.job li::marker{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.dv .chips span{font-family:var(--f-mono);font-size:.72rem;padding:.22rem .55rem;border-radius:5px;background:var(--accent-soft)}
+.roles{list-style:none;padding:0!important;margin-top:1rem!important;display:grid;gap:.5rem}
+.roles li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.2rem 1rem;padding:.55rem .8rem;border-left:2px solid var(--line);margin:0!important}
+.roles li span{font-family:var(--f-mono);font-size:.76rem;color:var(--muted)}
+@media (max-width:640px){.job{grid-template-columns:1fr;gap:.6rem}}
+
+.lake{display:grid;gap:.9rem}
+.layer{display:grid;grid-template-columns:12rem 1fr;gap:1.5rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.4rem}
+.layer>*{min-width:0}
+.layer .name{display:flex;align-items:center;gap:.7rem}
+.layer .dot{width:28px;height:28px;border-radius:50%;flex:none;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 40%,white),var(--c) 70%)}
+.layer h3{font-size:1.05rem}
+.layer .name small{display:block;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);font-weight:400}
+.layer .chips{margin-top:0}
+.dv .layer .chips span{background:color-mix(in srgb,var(--c) 14%,transparent)}
+.flow{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);text-align:center}
+.cross{display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center;margin-top:1.2rem;padding-top:1.2rem;border-top:1px dashed var(--line)}
+.cross b{font-size:.9rem}
+@media (max-width:640px){.layer{grid-template-columns:1fr;gap:.9rem}}
+
+.edu{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.dv .edu article{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.4rem}
+.dv .edu .yr{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.edu h3{font-size:1.15rem;margin-top:.4rem}
+.dv .edu p{color:var(--muted);margin-top:.35rem;font-size:.95rem}
+@media (max-width:640px){.edu{grid-template-columns:1fr}}
+
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact>*{min-width:0}
+.contact .big{font-size:1.15rem;max-width:28rem}
+.dv .contact .big{color:var(--muted)}
+.rows{display:grid}
+.row{display:grid;grid-template-columns:5.5rem 1fr auto;gap:1rem;align-items:center;padding-block:.95rem}
+.row>*{min-width:0}
+.row .val{font-weight:600;overflow-wrap:anywhere;user-select:all}
+.row a.val{user-select:auto;text-decoration:none}
+.copy{font-size:.72rem;background:none;cursor:pointer;padding:.3rem .55rem}
+.dv .rows{border-top:1px solid var(--line)}
+.dv .row{border-bottom:1px solid var(--line)}
+.dv .row .lbl{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.dv .row a.val{color:var(--fg)} .dv .row a.val:hover{color:var(--accent)}
+.dv .copy{font-family:var(--f-mono);border:1px solid var(--line);color:var(--muted);border-radius:6px}
+.dv .copy:hover{color:var(--fg);border-color:var(--fg)}
+@media (max-width:760px){.contact{grid-template-columns:1fr;gap:1.6rem}}
+
+footer{margin-top:5rem;padding-block:1.6rem 2.4rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem;font-size:.75rem}
+.dv footer{border-top:1px solid var(--line);font-family:var(--f-mono);color:var(--muted)}
+.dv footer a{color:var(--muted)}
+
+/* ================= VISTA GAME ================= */
+.gv{font-family:var(--g-body);background-image:radial-gradient(circle at 20% 30%,rgba(244,184,214,.12) 1px,transparent 1.6px),radial-gradient(circle at 70% 80%,rgba(255,217,160,.08) 1px,transparent 1.6px);background-size:46px 46px,71px 71px;min-height:100vh}
+.gv a{color:var(--g-coin)}
+.gv h1,.gv h2,.gv h3{font-family:var(--g-display)}
+.gv .top{background:color-mix(in srgb,var(--g-bg) 85%,transparent);border-bottom:2px solid var(--g-line)}
+.gv .logo{font-family:var(--g-pixel);font-size:.85rem;color:var(--g-fg)}
+.gv .logo b{color:var(--g-coin);font-weight:400}
+.gv nav.links a{color:var(--g-muted);font-family:var(--g-pixel);font-size:.72rem}
+.gv nav.links a:hover{color:var(--g-coin)}
+.gv .pill{border:2px solid var(--g-line);border-radius:4px;font-family:var(--g-pixel);color:var(--g-muted)}
+.gv .pill button[aria-pressed="true"]{background:var(--g-coin);color:var(--g-ink)}
+.gv .to-data{font-family:var(--f-mono);font-size:.74rem;background:#F3F6F7;color:#13202A;border:0;border-radius:999px;padding:.4rem .8rem;cursor:pointer;white-space:nowrap}
+.gv .to-data:hover{background:#fff}
+
+.gv .status{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--g-pixel);font-size:.75rem;color:var(--g-mint);background:rgba(255,217,160,.1);padding:.3rem .7rem;border-radius:2px;margin-bottom:1.4rem}
+.gv .status i{width:8px;height:8px;background:var(--g-mint);animation:blink 1s steps(2,start) infinite}
+@keyframes blink{to{visibility:hidden}}
+.gv .hero h1{font-size:clamp(2.6rem,7vw,4.8rem);font-weight:700;letter-spacing:-.01em}
+.gv .hero h1 span{display:block;color:var(--g-coin)}
+.gv .role{font-family:var(--g-pixel);font-size:.85rem;margin-top:1.1rem;color:var(--g-muted)}
+.gv .role em{font-style:normal;color:var(--g-pink)}
+.gv .lede{color:var(--g-muted);font-size:1.08rem;max-width:36rem;margin-top:1.1rem}
+.gv .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.1rem;border-radius:4px;font-family:var(--g-pixel);font-size:.78rem;text-decoration:none;border:2px solid var(--g-fg);color:var(--g-fg);box-shadow:4px 4px 0 var(--g-pink)}
+.gv .btn.primary{background:var(--g-coin);border-color:var(--g-coin);color:var(--g-ink)}
+.gv .btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--g-pink)}
+
+.sheet{background:var(--g-surface);border:2px solid var(--g-coin);border-radius:4px;box-shadow:8px 8px 0 var(--g-pink);font-size:.92rem;overflow:hidden}
+.sheet .hd{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;background:var(--g-coin);color:var(--g-ink);font-family:var(--g-pixel);font-size:.78rem;padding:.55rem .9rem}
+.sheet .bd{padding:1rem 1.1rem;display:grid;gap:.95rem}
+.sheet dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;margin:0}
+.sheet dt{font-family:var(--g-pixel);font-size:.72rem;color:var(--g-muted);padding-top:.15rem}
+.sheet dd{margin:0;font-weight:600;min-width:0}
+.xp-label{display:flex;justify-content:space-between;gap:1rem;font-family:var(--g-pixel);font-size:.72rem;color:var(--g-muted);margin-bottom:.35rem}
+.xp-label b{color:var(--g-mint);font-weight:400}
+.xp{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;border:2px solid var(--g-fg);padding:3px}
+.xp i{height:10px;background:var(--g-mint)}
+.sheet h4{margin:0 0 .45rem;font-family:var(--g-pixel);font-size:.72rem;font-weight:400;color:var(--g-muted)}
+.gv .chips span{font-family:var(--g-pixel);font-size:.68rem;padding:.25rem .5rem;border-radius:2px;background:var(--g-coin-soft);color:var(--g-fg)}
+.sheet .chips{margin-top:0}
+.sheet .ft{border-top:2px dashed var(--g-line);padding:.55rem 1.1rem;font-family:var(--g-pixel);font-size:.72rem;color:var(--g-pink);animation:blink 1.2s steps(2,start) infinite}
+
+.gv .facts{border:2px solid var(--g-line);border-radius:4px;background:var(--g-surface)}
+.gv .facts div{padding-left:1rem}
+.gv .facts div+div{border-left:2px solid var(--g-line)}
+.gv .facts b{font-family:var(--g-display);color:var(--g-coin)}
+.gv .facts span{color:var(--g-muted)}
+@media (max-width:760px){.gv .facts div:nth-child(n+3){border-top:2px solid var(--g-line)}}
+@media (max-width:760px){.dv .facts div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+.gv .eyebrow{font-family:var(--g-pixel);font-size:.75rem;letter-spacing:.06em;color:var(--g-pink);margin-bottom:.7rem}
+.gv section.block h2{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:700;margin-bottom:2rem}
+
+.gv .now{background:var(--g-surface);border:2px solid var(--g-line);border-radius:4px}
+.gv .now .tag{font-family:var(--g-pixel);font-size:.7rem;color:var(--g-mint);border:2px solid var(--g-mint);border-radius:2px;padding:.2rem .5rem;white-space:nowrap}
+.gv .now p{color:var(--g-muted);margin-top:.4rem}
+
+.games{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.gcard{display:flex;flex-direction:column;background:var(--g-surface);border:2px solid var(--g-line);border-radius:4px;box-shadow:5px 5px 0 var(--g-line);overflow:hidden;text-decoration:none;color:var(--g-fg)!important;transition:transform .12s steps(2),box-shadow .12s steps(2),border-color .12s}
+.gcard:hover{transform:translate(-2px,-2px);border-color:var(--g-coin);box-shadow:7px 7px 0 var(--g-coin)}
+.tile{aspect-ratio:16/10;max-width:100%;position:relative;display:flex;align-items:flex-end;padding:.8rem;color:#fff;
+  background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.2) 1px,transparent 1.5px) 0 0/8px 8px,linear-gradient(135deg,hsl(var(--h) 50% 46%),hsl(322 52% 20%))}
+.tile b{font-family:var(--g-display);font-size:1.4rem;font-weight:700;line-height:1.05;text-shadow:3px 3px 0 rgba(0,0,0,.35)}
+.tile .gl{position:absolute;top:.6rem;right:.7rem;font-family:var(--g-pixel);font-size:.62rem;background:rgba(0,0,0,.35);padding:.15rem .45rem;border-radius:2px}
+.gcard .body{padding:.9rem 1rem 1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.gcard p{font-size:.88rem;color:var(--g-muted);line-height:1.5}
+.gcard .meta{margin-top:auto;font-family:var(--g-pixel);font-size:.62rem;color:var(--g-muted)}
+.gcard .meta em{font-style:normal;color:var(--g-mint)}
+.more{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;align-items:center;margin-top:1.6rem;color:var(--g-muted);font-size:.95rem}
+.more a{font-family:var(--g-pixel);font-size:.78rem}
+@media (max-width:900px){.games{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:420px){.games{grid-template-columns:1fr}}
+
+.gv .about p{color:var(--g-fg)}
+.gv .principles div{border:2px solid var(--g-line);border-radius:4px;padding:.9rem 1rem;background:var(--g-surface)}
+.gv .principles h3{font-size:1.1rem;color:var(--g-coin)}
+.gv .principles p{color:var(--g-muted);font-size:.93rem;margin-top:.25rem}
+
+.jams{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.jam{border:2px dashed var(--g-line);border-radius:4px;padding:1.1rem}
+.jam .yr{font-family:var(--g-pixel);font-size:.7rem;color:var(--g-mint)}
+.jam h3{font-size:1.2rem;margin-top:.35rem}
+.jam p{color:var(--g-muted);font-size:.9rem;margin-top:.3rem}
+.jam.win{border-style:solid;border-color:var(--g-coin);box-shadow:5px 5px 0 var(--g-coin-soft)}
+.fin{display:inline-block;margin-top:.55rem;font-family:var(--g-pixel);font-size:.62rem;background:var(--g-coin);color:var(--g-ink);padding:.15rem .45rem;border-radius:2px}
+.fin.champ{background:var(--g-mint);color:var(--g-ink)}
+.jam.champ-card{border-color:var(--g-mint);box-shadow:5px 5px 0 rgba(255,217,160,.2)}
+.sparkle{color:var(--g-coin)}
+.gcard .meta{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:center}
+.gcard .meta .fin{margin-top:0}
+@media (max-width:900px){.jams{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.jams{grid-template-columns:1fr}}
+
+.gv .rows{border-top:2px solid var(--g-line)}
+.gv .row{border-bottom:2px solid var(--g-line)}
+.gv .row .lbl{font-family:var(--g-pixel);font-size:.66rem;color:var(--g-muted)}
+.gv .row a.val{color:var(--g-fg)} .gv .row a.val:hover{color:var(--g-coin)}
+.gv .copy{font-family:var(--g-pixel);border:2px solid var(--g-line);color:var(--g-muted);border-radius:2px}
+.gv .copy:hover{color:var(--g-coin);border-color:var(--g-coin)}
+.gv .contact .big{color:var(--g-muted)}
+.gv footer{border-top:2px solid var(--g-line);font-family:var(--g-pixel);font-size:.66rem;color:var(--g-muted)}
+.gv footer a{color:var(--g-muted)}
+
+/* fotos y logo */
+.idrow{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.idrow .status{margin-bottom:0}
+.avatar{width:88px;height:88px;max-width:100%;border-radius:50%;object-fit:cover;flex:none}
+.dv .avatar{border:3px solid var(--surface);box-shadow:0 0 0 1px var(--line),0 10px 24px -14px rgba(8,20,26,.5)}
+.who{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center}
+.who>*{min-width:0}
+.portrait{width:96px;height:96px;max-width:100%;object-fit:cover;border:3px solid var(--g-coin);border-radius:4px;box-shadow:4px 4px 0 var(--g-pink);image-rendering:auto;background:var(--g-ink)}
+.gv .principles .team{border:2px solid var(--g-pink);border-radius:4px;padding:1.1rem;background:var(--g-surface);display:grid;gap:.6rem;justify-items:start}
+.team img{width:min(240px,100%);height:auto}
+.team p{color:var(--g-muted);font-size:.93rem}
+@media (max-width:440px){.who{grid-template-columns:1fr}}
+
+/* transición entre roles */
+.swap{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#14060F;color:#F4B8D6;font-family:var(--g-pixel);font-size:clamp(1rem,3vw,1.5rem);letter-spacing:.08em;pointer-events:none;opacity:0;visibility:hidden;text-align:center;padding:20px}
+.swap::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 2px,transparent 2px 4px)}
+.swap.on{animation:swap .7s steps(6) forwards}
+@keyframes swap{0%{opacity:0;visibility:visible}25%,70%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.swap{display:none}.btn:hover,.gcard:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<!-- ======================= VISTA DATA ======================= -->
+<div class="dv">
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#top">sebastian<b>.</b>bañon</a>
+      <nav class="links">
+        <a href="#sobre-mi"><span data-l="es">Sobre mí</span><span data-l="en">About</span></a>
+        <a href="#experiencia"><span data-l="es">Experiencia</span><span data-l="en">Experience</span></a>
+        <a href="#stack">Stack</a>
+        <a href="#formacion"><span data-l="es">Formación</span><span data-l="en">Education</span></a>
+        <a href="#contacto"><span data-l="es">Contacto</span><span data-l="en">Contact</span></a>
+      </nav>
+      <button class="to-game" type="button" data-go="game"><span data-l="es">▶ Modo gamer</span><span data-l="en">▶ Game mode</span></button>
+      <div class="pill" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button></div>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <section class="hero">
+      <div>
+        <div class="status"><i></i><span data-l="es">Abierto a nuevas oportunidades</span><span data-l="en">Open to new opportunities</span></div>
+        <h1>Sebastian <span>Bañon Felix</span></h1>
+        <p class="role">Machine Learning Engineer <em>@ NTT DATA</em> · Lima, Perú</p>
+        <p class="lede" data-l="es">Data Engineer con más de 3 años construyendo pipelines escalables y llevando modelos de Machine Learning a producción en Azure y Google Cloud. Me gusta desarmar problemas complejos y convertirlos en sistemas de datos confiables, de la ingesta al análisis.</p>
+        <p class="lede" data-l="en">Data Engineer with 3+ years building scalable pipelines and taking Machine Learning models to production on Azure and Google Cloud. I like breaking down complex problems and turning them into reliable data systems, from ingestion to analytics.</p>
+        <div class="cta">
+          <a class="btn primary" href="#contacto"><span data-l="es">Contáctame</span><span data-l="en">Get in touch</span> →</a>
+          <a class="btn" href="#experiencia"><span data-l="es">Ver experiencia</span><span data-l="en">See experience</span></a>
+        </div>
+      </div>
+      <div class="query" aria-label="Resumen en formato de consulta SQL">
+        <div class="bar"><i></i><i></i><i></i><span>gold.people · databricks sql</span></div>
+<pre><span class="k">SELECT</span> *
+<span class="k">FROM</span>   gold.people
+<span class="k">WHERE</span>  name = <span class="s">'sebastian_banon'</span>;</pre>
+        <table>
+          <tr><td>role</td><td>ML Engineer</td></tr>
+          <tr><td>company</td><td>NTT DATA Europe &amp; Latam</td></tr>
+          <tr><td>cloud</td><td>Azure · GCP</td></tr>
+          <tr><td>stack_now</td><td>Databricks · PySpark · Azure ML</td></tr>
+          <tr><td>architecture</td><td>Lakehouse · Medallion</td></tr>
+          <tr><td>english</td><td>IELTS 7.5 (C1)</td></tr>
+          <tr><td>timezone</td><td>UTC−5</td></tr>
+        </table>
+        <div class="foot">1 row · 0.04s</div>
+      </div>
+    </section>
+
+    <div class="facts">
+      <div><b>3+</b><span data-l="es">años en datos</span><span data-l="en">years in data</span></div>
+      <div><b>2</b><span data-l="es">nubes: Azure y GCP</span><span data-l="en">clouds: Azure and GCP</span></div>
+      <div><b>~50%</b><span data-l="es">menos trabajo manual con ticketing</span><span data-l="en">less manual work via ticketing</span></div>
+      <div><b>C1</b><span data-l="es">inglés · IELTS 7.5</span><span data-l="en">English · IELTS 7.5</span></div>
+    </div>
+
+    <section class="block" id="sobre-mi">
+      <div class="eyebrow"><span data-l="es">Sobre mí</span><span data-l="en">About me</span></div>
+      <h2><span data-l="es">Datos confiables, de punta a punta</span><span data-l="en">Reliable data, end to end</span></h2>
+      <div class="about">
+        <div>
+          <p data-l="es">Empecé automatizando procesos y armando dashboards en Google Cloud, y de ahí pasé a diseñar pipelines en arquitectura Lakehouse sobre Azure y Databricks para el BCP. En ese camino trabajé de cerca con Data Scientists para llevar sus modelos a producción, y hoy me dedico a eso como Machine Learning Engineer en NTT DATA.</p>
+          <p data-l="en">I started out automating processes and building dashboards on Google Cloud, then moved on to designing Lakehouse pipelines on Azure and Databricks for BCP. Along the way I worked closely with Data Scientists to put their models into production, and today that is my job as a Machine Learning Engineer at NTT DATA.</p>
+          <p data-l="es">Me formé en Data Science en Le Wagon con beca de ProInnovate y sigo aprendiendo por mi cuenta. Disfruto tanto escribir el pipeline como explicarle a un equipo cómo usarlo.</p>
+          <p data-l="en">I trained in Data Science at Le Wagon on a ProInnovate scholarship and keep learning on my own. I enjoy writing the pipeline as much as teaching a team how to use it.</p>
+        </div>
+        <div class="principles">
+          <div><h3 data-l="es">Ingeniería de punta a punta</h3><h3 data-l="en">End-to-end engineering</h3>
+            <p data-l="es">De la ingesta hasta el dashboard o el modelo en producción.</p><p data-l="en">From ingestion to the dashboard or the model in production.</p></div>
+          <div><h3 data-l="es">Calidad desde el código</h3><h3 data-l="en">Quality starts in the code</h3>
+            <p data-l="es">Control de versiones, CI/CD y pruebas unitarias en cada pipeline.</p><p data-l="en">Version control, CI/CD and unit tests on every pipeline.</p></div>
+          <div><h3 data-l="es">Enseñar lo que construyo</h3><h3 data-l="en">Teach what I build</h3>
+            <p data-l="es">He dado capacitaciones internas para que los equipos adopten nuevas herramientas.</p><p data-l="en">I have run internal trainings so teams adopt new tools.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="ahora">
+      <div class="eyebrow"><span data-l="es">Ahora · 2026</span><span data-l="en">Now · 2026</span></div>
+      <div class="now">
+        <span class="tag"><span data-l="es">desde jun 2026</span><span data-l="en">since Jun 2026</span></span>
+        <div>
+          <h3>Machine Learning Engineer · NTT DATA Europe &amp; Latam</h3>
+          <p data-l="es">Jornada completa, modalidad híbrida en Perú. Enfocado en llevar modelos de Machine Learning a producción.</p>
+          <p data-l="en">Full-time, hybrid, based in Peru. Focused on taking Machine Learning models to production.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="experiencia">
+      <div class="eyebrow"><span data-l="es">Trayectoria</span><span data-l="en">Track record</span></div>
+      <h2><span data-l="es">Experiencia</span><span data-l="en">Experience</span></h2>
+      <article class="job">
+        <div class="when"><b>Jun 2026 — <span data-l="es">hoy</span><span data-l="en">now</span></b><span data-l="es">Híbrido · Perú</span><span data-l="en">Hybrid · Peru</span></div>
+        <div>
+          <h3>Machine Learning Engineer</h3>
+          <p class="org">NTT DATA Europe &amp; Latam</p>
+          <div class="chips"><span>MLOps</span><span>Azure</span><span>Databricks</span></div>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when"><b><span data-l="es">Dic</span><span data-l="en">Dec</span> 2024 — May 2026</b><span data-l="es">1 año 6 meses · Híbrido</span><span data-l="en">1 yr 6 mos · Hybrid</span></div>
+        <div>
+          <h3>Data Engineer Jr (Azure Cloud)</h3>
+          <p class="org">Indra Perú <small>· <span data-l="es">cliente</span><span data-l="en">client</span>: BCP</small></p>
+          <ul data-l="es">
+            <li>Apoyé a Data Scientists en el despliegue a producción de modelos de ML con Azure Machine Learning Studio.</li>
+            <li>Diseñé y mantuve pipelines escalables en arquitectura Lakehouse con PySpark y SparkSQL sobre Azure y Databricks.</li>
+            <li>Implementé procesos ETL/ELT siguiendo la arquitectura Medallion (Bronce, Plata, Oro).</li>
+            <li>Integré datos estructurados y no estructurados de SQL Server, Oracle y otros sistemas con Azure Data Factory.</li>
+            <li>Construí dashboards en Power BI conectados al Data Lake.</li>
+            <li>Apliqué CI/CD con GitHub Actions, control de versiones y pruebas unitarias para los pipelines.</li>
+          </ul>
+          <ul data-l="en">
+            <li>Supported Data Scientists deploying ML models to production with Azure Machine Learning Studio.</li>
+            <li>Designed and maintained scalable Lakehouse pipelines with PySpark and SparkSQL on Azure and Databricks.</li>
+            <li>Implemented ETL/ELT processes following the Medallion architecture (Bronze, Silver, Gold).</li>
+            <li>Integrated structured and unstructured data from SQL Server, Oracle and other systems using Azure Data Factory.</li>
+            <li>Built Power BI dashboards connected to the Data Lake.</li>
+            <li>Applied CI/CD with GitHub Actions, version control and unit testing for pipelines.</li>
+          </ul>
+          <div class="chips"><span>Azure ML</span><span>Databricks</span><span>PySpark</span><span>SparkSQL</span><span>Data Factory</span><span>Power BI</span><span>GitHub Actions</span></div>
+        </div>
+      </article>
+      <article class="job">
+        <div class="when"><b><span data-l="es">Abr</span><span data-l="en">Apr</span> 2023 — <span data-l="es">Abr</span><span data-l="en">Apr</span> 2024</b><span data-l="es">1 año 1 mes · Remoto</span><span data-l="en">1 yr 1 mo · Remote</span></div>
+        <div>
+          <h3><span data-l="es">TI / Data Engineer Jr (Google Cloud)</span><span data-l="en">IT / Data Engineer Jr (Google Cloud)</span></h3>
+          <p class="org">SIF · Smart Investment Fund</p>
+          <ul class="roles">
+            <li><b data-l="es">Responsable de TI</b><b data-l="en">IT Lead</b><span><span data-l="es">mar</span><span data-l="en">Mar</span> – <span data-l="es">abr</span><span data-l="en">Apr</span> 2024</span></li>
+            <li><b data-l="es">Analista de Vigilancia Tecnológica</b><b data-l="en">Technology Watch Analyst</b><span><span data-l="es">jul</span><span data-l="en">Jul</span> 2023 – <span data-l="es">mar</span><span data-l="en">Mar</span> 2024</span></li>
+            <li><b data-l="es">Practicante de Vigilancia Tecnológica</b><b data-l="en">Technology Watch Intern</b><span><span data-l="es">abr</span><span data-l="en">Apr</span> – <span data-l="es">jul</span><span data-l="en">Jul</span> 2023</span></li>
+          </ul>
+          <ul data-l="es">
+            <li>Construí y automaticé pipelines de datos para iniciativas de BI y analítica.</li>
+            <li>Integré datos desde Excel y APIs para alimentar reportes y dashboards.</li>
+            <li>Automaticé la generación de contratos y el procesamiento de encuestas NPS con Python y GCP.</li>
+            <li>Implementé seguimiento de proyectos y ticketing con Jira y Trello, reduciendo el trabajo manual en ~50%.</li>
+            <li>Di capacitaciones internas para la adopción de nuevas herramientas de automatización.</li>
+          </ul>
+          <ul data-l="en">
+            <li>Built and automated data pipelines for BI and analytics initiatives.</li>
+            <li>Integrated data from Excel files and APIs to feed reports and dashboards.</li>
+            <li>Automated contract generation and NPS survey processing with Python and GCP.</li>
+            <li>Implemented ticketing and project tracking with Jira and Trello, cutting manual work by ~50%.</li>
+            <li>Delivered internal trainings to drive adoption of new automation tools.</li>
+          </ul>
+          <div class="chips"><span>Python</span><span>Google Cloud</span><span>Power BI</span><span>APIs</span><span>Jira</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="block" id="stack">
+      <div class="eyebrow">Stack</div>
+      <h2><span data-l="es">Mis herramientas, capa por capa</span><span data-l="en">My tools, layer by layer</span></h2>
+      <div class="lake">
+        <div class="layer" style="--c:var(--bronze)">
+          <div class="name"><span class="dot"></span><div><h3><span data-l="es">Bronce</span><span data-l="en">Bronze</span></h3><small><span data-l="es">ingesta y fuentes</span><span data-l="en">ingestion &amp; sources</span></small></div></div>
+          <div class="chips"><span>Azure Data Factory</span><span>Apache Airflow</span><span>SQL Server</span><span>Oracle</span><span>SAP (<span data-l="es">básico</span><span data-l="en">basic</span>)</span><span>APIs</span><span>Fabric Pipelines</span></div>
+        </div>
+        <div class="flow">↓</div>
+        <div class="layer" style="--c:var(--silver)">
+          <div class="name"><span class="dot"></span><div><h3><span data-l="es">Plata</span><span data-l="en">Silver</span></h3><small><span data-l="es">procesamiento</span><span data-l="en">processing</span></small></div></div>
+          <div class="chips"><span>Databricks</span><span>PySpark</span><span>SparkSQL</span><span>Python</span><span>SQL</span></div>
+        </div>
+        <div class="flow">↓</div>
+        <div class="layer" style="--c:var(--gold)">
+          <div class="name"><span class="dot"></span><div><h3><span data-l="es">Oro</span><span data-l="en">Gold</span></h3><small><span data-l="es">consumo y modelos</span><span data-l="en">serving &amp; models</span></small></div></div>
+          <div class="chips"><span>Azure Machine Learning</span><span>Power BI</span><span>Azure Synapse</span></div>
+        </div>
+      </div>
+      <div class="cross">
+        <b><span data-l="es">En todas las capas:</span><span data-l="en">Across every layer:</span></b>
+        <div class="chips" style="margin-top:0"><span>Git</span><span>GitHub Actions</span><span>CI/CD</span><span><span data-l="es">pruebas de pipelines</span><span data-l="en">pipeline testing</span></span><span>Azure</span><span>Google Cloud</span></div>
+      </div>
+    </section>
+
+    <section class="block" id="formacion">
+      <div class="eyebrow"><span data-l="es">Formación</span><span data-l="en">Education</span></div>
+      <h2><span data-l="es">Estudios y certificaciones</span><span data-l="en">Education &amp; certifications</span></h2>
+      <div class="edu">
+        <article><div class="yr">2024</div><h3>Data Science Bootcamp · Le Wagon</h3>
+          <p data-l="es">Becado por ProInnovate Perú.</p><p data-l="en">ProInnovate Peru scholarship.</p></article>
+        <article><div class="yr">2026</div><h3>IELTS · Band 7.5 (C1)</h3>
+          <p data-l="es">Inglés avanzado, listo para equipos internacionales.</p><p data-l="en">Advanced English, ready for international teams.</p></article>
+      </div>
+    </section>
+
+    <section class="block" id="contacto">
+      <div class="eyebrow"><span data-l="es">Contacto</span><span data-l="en">Contact</span></div>
+      <h2><span data-l="es">Conversemos</span><span data-l="en">Let's talk</span></h2>
+      <div class="contact">
+        <p class="big" data-l="es">¿Tienes un proyecto de datos o una vacante en Data o ML Engineering? Escríbeme y te respondo pronto.</p>
+        <p class="big" data-l="en">Have a data project or an opening in Data or ML Engineering? Write to me and I'll get back to you soon.</p>
+        <div class="rows">
+          <div class="row"><span class="lbl">Email</span><span class="val" id="d-mail">sbanonf@gmail.com</span><button class="copy" type="button" data-copy="d-mail"><span data-l="es">copiar</span><span data-l="en">copy</span></button></div>
+          <div class="row"><span class="lbl">GitHub</span><a class="val" href="https://github.com/sbanonfe" target="_blank" rel="noopener">github.com/sbanonfe ↗</a><span></span></div>
+          <div class="row"><span class="lbl"><span data-l="es">Ubicación</span><span data-l="en">Location</span></span><span class="val">Lima, Perú · UTC−5</span><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Sebastian Bañon Felix</span>
+      <span>bronze → silver → gold</span>
+      <a href="#top"><span data-l="es">↑ Volver arriba</span><span data-l="en">↑ Back to top</span></a>
+    </footer>
+  </main>
+</div>
+
+<!-- ======================= VISTA GAME ======================= -->
+<div class="gv">
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#g-top">sleepy<b>.</b>bara</a>
+      <nav class="links">
+        <a href="#g-juegos"><span data-l="es">Juegos</span><span data-l="en">Games</span></a>
+        <a href="#g-jams">Jams</a>
+        <a href="#g-sobre"><span data-l="es">Sobre mí</span><span data-l="en">About</span></a>
+        <a href="#g-contacto"><span data-l="es">Contacto</span><span data-l="en">Contact</span></a>
+      </nav>
+      <button class="to-data" type="button" data-go="data"><span data-l="es">◀ Modo data</span><span data-l="en">◀ Data mode</span></button>
+      <div class="pill" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es">ES</button><button type="button" data-lang="en">EN</button></div>
+    </div>
+  </header>
+
+  <main class="wrap" id="g-top">
+    <section class="hero">
+      <div>
+        <div class="status"><i></i><span data-l="es">ABIERTO A FREELOS</span><span data-l="en">OPEN TO FREELANCE</span></div>
+        <h1>Sebastian <span>aka SleepyBara</span></h1>
+        <p class="role">Game programmer · <em>Unity</em> · Lima, Perú</p>
+        <p class="lede" data-l="es">He publicado 11 juegos, muchos inspirados en el Perú.</p>
+        <p class="lede" data-l="en">I've published 11 games, many inspired by Peru.</p>
+        <div class="cta">
+          <a class="btn primary" href="#g-juegos"><span data-l="es">▶ Jugar mis juegos</span><span data-l="en">▶ Play my games</span></a>
+          <a class="btn" href="https://sleepy-capybara.itch.io/" target="_blank" rel="noopener">itch.io ↗</a>
+        </div>
+      </div>
+
+      <div class="sheet" aria-label="Ficha de personaje">
+        <div class="hd"><span>PLAYER 1</span><span>SLEEPYBARA</span></div>
+        <div class="bd">
+          <div>
+          <dl>
+            <dt><span data-l="es">CLASE</span><span data-l="en">CLASS</span></dt><dd><span data-l="es">Programador y game designer</span><span data-l="en">Programmer &amp; game designer</span></dd>
+            <dt><span data-l="es">MOTOR</span><span data-l="en">ENGINE</span></dt><dd>Unity</dd>
+            <dt><span data-l="es">EQUIPO</span><span data-l="en">TEAM</span></dt><dd>Pixperfect <span class="sparkle">✦</span></dd>
+            <dt><span data-l="es">PARTY</span><span data-l="en">PARTY</span></dt><dd><span data-l="es">Hasta 11 jugadores</span><span data-l="en">Up to 11 players</span></dd>
+            <dt><span data-l="es">BASE</span><span data-l="en">HOME</span></dt><dd>Lima, Perú</dd>
+          </dl>
+          </div>
+          <div>
+            <div class="xp-label"><span><span data-l="es">JUEGOS</span><span data-l="en">GAMES</span></span><b>11 / 11</b></div>
+            <div class="xp" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div>
+            <h4><span data-l="es">INVENTARIO</span><span data-l="en">INVENTORY</span></h4>
+            <div class="chips"><span>Unity</span><span>C#</span><span>WebGL</span><span>Git</span><span>Game design</span></div>
+          </div>
+          <div>
+            <h4><span data-l="es">LOGROS</span><span data-l="en">ACHIEVEMENTS</span></h4>
+            <div class="chips"><span>🏆 <span data-l="es">Ganador Taller Game Jam 2024</span><span data-l="en">Winner, Taller Game Jam 2024</span></span><span>✦ <span data-l="es">Finalista LATAM GJ+ 23/24</span><span data-l="en">LATAM finalist GJ+ 23/24</span></span><span>✦ <span data-l="es">Finalista LATAM GJ+ 24/25</span><span data-l="en">LATAM finalist GJ+ 24/25</span></span><span>✦ <span data-l="es">Finalista BCP Jam</span><span data-l="en">Finalist, BCP Jam</span></span></div>
+          </div>
+        </div>
+        <div class="ft">PRESS START ▶</div>
+      </div>
+    </section>
+
+    <div class="facts">
+      <div><b>11</b><span data-l="es">juegos en itch.io</span><span data-l="en">games on itch.io</span></div>
+      <div><b>9</b><span data-l="es">game jams</span><span data-l="en">game jams</span></div>
+      <div><b>1</b><span data-l="es">jam ganada · Taller 2024</span><span data-l="en">jam won · Taller 2024</span></div>
+      <div><b>3</b><span data-l="es">veces finalista · 2 LATAM</span><span data-l="en">times finalist · 2 LATAM</span></div>
+    </div>
+
+    <section class="block" id="g-ahora">
+      <div class="eyebrow"><span data-l="es">ÚLTIMO LANZAMIENTO</span><span data-l="en">LATEST RELEASE</span></div>
+      <div class="now">
+        <span class="tag"><span data-l="es">30 SEP 2026</span><span data-l="en">SEP 30 2026</span></span>
+        <div>
+          <h3>GUAKO</h3>
+          <p data-l="es">Hecho para la Patrimonio Gamejam 2026 junto a Fábrica de Chocolate Game Studio. Disponible para Windows y macOS.</p>
+          <p data-l="en">Made for Patrimonio Gamejam 2026 with Fábrica de Chocolate Game Studio. Available for Windows and macOS.</p>
+          <p><a href="https://sleepy-capybara.itch.io/guako" target="_blank" rel="noopener"><span data-l="es">Descargar en itch.io ↗</span><span data-l="en">Download on itch.io ↗</span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="g-juegos">
+      <div class="eyebrow"><span data-l="es">MIS JUEGOS</span><span data-l="en">MY GAMES</span></div>
+      <h2><span data-l="es">Selecciona un nivel</span><span data-l="en">Select a level</span></h2>
+      <div class="games">
+        <a class="gcard" href="https://sleepy-capybara.itch.io/spiritbar" target="_blank" rel="noopener">
+          <div class="tile" style="--h:265"><span class="gl">PLATFORMER</span><b>Spirit Bar</b></div>
+          <div class="body"><p data-l="es">Prepara cócteles para clientes fantasmas explorando pinturas mágicas.</p><p data-l="en">Mix cocktails for ghostly patrons by exploring magical paintings.</p>
+          <div class="meta"><em>GAMEJAMPLUS 24/25</em><span class="fin">✦ <span data-l="es">FINALISTA LATAM</span><span data-l="en">LATAM FINALIST</span></span></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/pan-survival" target="_blank" rel="noopener">
+          <div class="tile" style="--h:18"><span class="gl">ACTION</span><b>Pan Survival</b></div>
+          <div class="body"><p data-l="es">Una hamburguesa dispara ingredientes para sobrevivir a hordas de tenedores. Survivor-like retro.</p><p data-l="en">A burger shoots ingredients to survive fork hordes. Retro survivor-like.</p>
+          <div class="meta"><em>GAMEJAMPLUS 25/26</em></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/xolo-quest" target="_blank" rel="noopener">
+          <div class="tile" style="--h:190"><span class="gl">PUZZLE</span><b>Xolo Quest</b></div>
+          <div class="body"><p data-l="es">Un xoloitzcuintle escapa de cuartos en movimiento inspirados en Perú y México.</p><p data-l="en">A xoloitzcuintle pup escapes moving rooms inspired by Peru and Mexico.</p>
+          <div class="meta"><em>SANDA JAM</em></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/space-market-rush" target="_blank" rel="noopener">
+          <div class="tile" style="--h:225"><span class="gl">SIMULATION</span><b>Space Market Rush</b></div>
+          <div class="body"><p data-l="es">Pepe, un chef peruano, cocina platos exóticos para sus captores alienígenas.</p><p data-l="en">Pepe, a Peruvian chef, cooks exotic dishes for his alien captors.</p>
+          <div class="meta"><em>TALLER GAME JAM 2024</em><span class="fin champ">🏆 <span data-l="es">GANADOR</span><span data-l="en">WINNER</span></span></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/urpichallay" target="_blank" rel="noopener">
+          <div class="tile" style="--h:330"><span class="gl">RHYTHM</span><b>Urpichallay</b></div>
+          <div class="body"><p data-l="es">Minijuegos sobre mitos y leyendas del folclore peruano, contados desde el álbum de Paloma.</p><p data-l="en">Minigames about Peruvian folklore myths and legends, told through Paloma's photo album.</p>
+          <div class="meta"><em>UNIDOS GAME JAM 2024</em></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/gobernador" target="_blank" rel="noopener">
+          <div class="tile" style="--h:120"><span class="gl">POINT &amp; CLICK</span><b>#gobernador</b></div>
+          <div class="body"><p data-l="es">Toma decisiones para equilibrar desarrollo y cuidado del medio ambiente.</p><p data-l="en">Make decisions to balance development and environmental preservation.</p>
+          <div class="meta"><em>GAMEJAMPLUS 23/24</em><span class="fin">✦ <span data-l="es">FINALISTA LATAM</span><span data-l="en">LATAM FINALIST</span></span></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/don-cuy-emprende" target="_blank" rel="noopener">
+          <div class="tile" style="--h:38"><span class="gl">SIMULATION</span><b>Don Cuy Emprende</b></div>
+          <div class="body"><p data-l="es">Acompaña al cuy mientras saca adelante su bodega.</p><p data-l="en">Help the guinea pig keep his corner store running.</p>
+          <div class="meta"><em>BCP JAM</em><span class="fin">✦ <span data-l="es">FINALISTA</span><span data-l="en">FINALIST</span></span></div></div>
+        </a>
+        <a class="gcard" href="https://sleepy-capybara.itch.io/bubble-pals" target="_blank" rel="noopener">
+          <div class="tile" style="--h:290"><span class="gl">CO-OP</span><b>Bubble Pals</b></div>
+          <div class="body"><p data-l="es">Proyecto en equipo, en desarrollo y jugable en el navegador.</p><p data-l="en">Team project, in development and playable in the browser.</p>
+          <div class="meta"><em>GLOBAL GAME JAM</em></div></div>
+        </a>
+      </div>
+      <div class="more">
+        <a class="btn" href="https://sleepy-capybara.itch.io/" target="_blank" rel="noopener"><span data-l="es">VER TODO EN ITCH.IO ↗</span><span data-l="en">SEE ALL ON ITCH.IO ↗</span></a>
+      </div>
+    </section>
+
+    <section class="block" id="g-jams">
+      <div class="eyebrow">GAME JAMS</div>
+      <h2><span data-l="es">Jams en las que participé</span><span data-l="en">Jams I've joined</span></h2>
+      <div class="jams">
+        <div class="jam win"><div class="yr">2023/2024</div><h3>GameJamPlus</h3><p>#gobernador</p><span class="fin">✦ <span data-l="es">FINALISTA LATAM</span><span data-l="en">LATAM FINALIST</span></span></div>
+        <div class="jam win champ-card"><div class="yr">2024</div><h3>Taller Game Jam</h3><p data-l="es">Space Market Rush · programación y game design.</p><p data-l="en">Space Market Rush · programming and game design.</p><span class="fin champ">🏆 <span data-l="es">GANADOR</span><span data-l="en">WINNER</span></span></div>
+        <div class="jam"><div class="yr">2024</div><h3>Unidos Game Jam</h3><p data-l="es">Urpichallay · Hispanic Heritage Month.</p><p data-l="en">Urpichallay · Hispanic Heritage Month.</p></div>
+        <div class="jam win"><div class="yr">2024/2025</div><h3>GameJamPlus</h3><p>Spirit Bar</p><span class="fin">✦ <span data-l="es">FINALISTA LATAM</span><span data-l="en">LATAM FINALIST</span></span></div>
+        <div class="jam"><div class="yr">2025/2026</div><h3>GameJamPlus</h3><p>Pan Survival</p></div>
+        <div class="jam"><div class="yr">2026</div><h3>Patrimonio Gamejam</h3><p data-l="es">GUAKO · con Fábrica de Chocolate Game Studio.</p><p data-l="en">GUAKO · with Fábrica de Chocolate Game Studio.</p></div>
+        <div class="jam"><div class="yr">JAM</div><h3>Sanda Jam</h3><p>Xolo Quest</p></div>
+        <div class="jam"><div class="yr">JAM</div><h3>Global Game Jam</h3><p>Bubble Pals</p></div>
+        <div class="jam win"><div class="yr">JAM</div><h3>BCP Jam</h3><p>Don Cuy Emprende</p><span class="fin">✦ <span data-l="es">FINALISTA</span><span data-l="en">FINALIST</span></span></div>
+      </div>
+    </section>
+
+    <section class="block" id="g-sobre">
+      <div class="eyebrow"><span data-l="es">SOBRE MÍ</span><span data-l="en">ABOUT ME</span></div>
+      <h2><span data-l="es">Cómo juego en equipo</span><span data-l="en">How I play on a team</span></h2>
+      <div class="about">
+        <div>
+          <p data-l="es">Soy programador y los videojuegos son donde más me divierto programando. Las game jams me enseñaron a cerrar un juego jugable en pocos días, a cortar alcance sin miedo y a coordinar con artistas, músicos y otros devs, en equipos de hasta 11 personas.</p>
+          <p data-l="en">I'm a programmer, and video games are where I have the most fun coding. Game jams taught me to ship a playable game in a few days, to cut scope without fear, and to coordinate with artists, musicians and other devs on teams of up to 11 people.</p>
+          <p data-l="es">Me gusta que cada juego pruebe una idea nueva y que tenga algo de nuestra cultura.</p>
+          <p data-l="en">I like each game to try a new idea and carry something of our culture.</p>
+        </div>
+        <div class="principles">
+          <div class="team">
+            <img src="data:image/png;base64,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" alt="Pixperfect" width="240" height="83">
+            <p data-l="es">Mi equipo de game jams.</p><p data-l="en">My game jam team.</p>
+          </div>
+          <div><h3 data-l="es">Primero que sea jugable</h3><h3 data-l="en">Playable first</h3>
+            <p data-l="es">Un prototipo que se pueda probar el primer día, y de ahí iterar.</p><p data-l="en">A prototype you can test on day one, then iterate.</p></div>
+          <div><h3 data-l="es">Historias con raíz peruana</h3><h3 data-l="en">Stories with Peruvian roots</h3>
+            <p data-l="es">Cuyes, folclore, comida y paisajes como punto de partida.</p><p data-l="en">Guinea pigs, folklore, food and landscapes as a starting point.</p></div>
+          <div><h3 data-l="es">Buen compañero de party</h3><h3 data-l="en">A good party member</h3>
+            <p data-l="es">Código ordenado y versionado para que todo el equipo avance.</p><p data-l="en">Clean, versioned code so the whole team keeps moving.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="g-contacto">
+      <div class="eyebrow"><span data-l="es">CONTACTO</span><span data-l="en">CONTACT</span></div>
+      <h2><span data-l="es">¿Armamos party?</span><span data-l="en">Want to team up?</span></h2>
+      <div class="contact">
+        <p class="big" data-l="es">¿Tienes una game jam, un proyecto indie o un estudio que necesita programador? Escríbeme por Discord.</p>
+        <p class="big" data-l="en">Got a game jam, an indie project or a studio that needs a programmer? Message me on Discord.</p>
+        <div class="rows">
+          <div class="row"><span class="lbl">DISCORD</span><span class="val" id="g-discord">suavitel</span><button class="copy" type="button" data-copy="g-discord"><span data-l="es">COPIAR</span><span data-l="en">COPY</span></button></div>
+          <div class="row"><span class="lbl">ITCH.IO</span><a class="val" href="https://sleepy-capybara.itch.io/" target="_blank" rel="noopener">sleepy-capybara.itch.io ↗</a><span></span></div>
+          <div class="row"><span class="lbl">GITHUB</span><a class="val" href="https://github.com/sbanonfe" target="_blank" rel="noopener">github.com/sbanonfe ↗</a><span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 SLEEPYBARA</span>
+      <span>GAME OVER? <span data-l="es">CONTINUAR ▶</span><span data-l="en">CONTINUE ▶</span></span>
+      <a href="#g-top"><span data-l="es">↑ VOLVER ARRIBA</span><span data-l="en">↑ BACK TO TOP</span></a>
+    </footer>
+  </main>
+</div>
+
+<div class="swap" id="swap" aria-hidden="true"></div>
+
+<script>
+(function(){
+  var root=document.documentElement, sw=document.getElementById('swap');
+  function store(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function load(k){try{return localStorage.getItem(k)}catch(e){return null}}
+
+  function setLang(l){
+    root.classList.toggle('en',l==='en'); root.lang=l;
+    document.querySelectorAll('[data-lang]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.lang===l)});
+    store('lang',l);
+  }
+  function setMode(m,animate){
+    var isGame=m==='game';
+    function apply(){root.classList.toggle('game',isGame);store('mode',m);window.scrollTo(0,0)}
+    if(animate && root.classList.contains('game')!==isGame){
+      var en=root.classList.contains('en');
+      sw.textContent=isGame?(en?'LOADING GAME MODE…':'CARGANDO MODO GAMER…'):(en?'BACK TO DATA MODE…':'VOLVIENDO A MODO DATA…');
+      sw.classList.remove('on'); void sw.offsetWidth; sw.classList.add('on');
+      setTimeout(apply,220);
+    } else apply();
+  }
+  document.querySelectorAll('[data-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){setMode(b.dataset.go,true)})});
+
+  setLang(load('lang')==='en'?'en':'es');
+  var m=load('mode');
+  if(location.hash==='#gamer') m='game';
+  if(location.hash==='#data') m='data';
+  setMode(m==='game'?'game':'data',false);
+
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.copy), txt=el.textContent.trim(), label=b.innerHTML;
+      function done(){b.textContent='✓';setTimeout(function(){b.innerHTML=label},1400)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fallback)}else{fallback()}
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
